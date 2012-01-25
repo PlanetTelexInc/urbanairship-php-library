@@ -10,6 +10,7 @@ define('DEVICE_TOKEN_URL', BASE_URL . '/device_tokens/');
 define('PUSH_URL', BASE_URL . '/push/');
 define('BROADCAST_URL',  BASE_URL . '/push/broadcast/');
 define('FEEDBACK_URL', BASE_URL . '/device_tokens/feedback/');
+define('TAGS_URL', BASE_URL . '/tags/');
 
 
 // Raise when we get a 401 from the server.
@@ -208,6 +209,17 @@ class Airship {
                                                        new DateTimeZone('UTC'));
         }
         return $results;
+    }
+
+    // Retrieve all application Tags.
+    public function get_tags() {
+    	$url = TAGS_URL;
+    	$response = $this->_request($url, 'GET', null, null);
+    	$response_code = $response[0];
+    	if ($response_code != 200) {
+    		throw new AirshipFailure($response[1], $response_code);
+    	}
+    	return json_decode($response[1]);
     }
 
 }
